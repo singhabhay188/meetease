@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { buttonVariants } from "@/components/ui/button"
 import Image from "next/image";
 import { PenBox } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import UserButtonMine from "./UserButtonMine";
 
 export default function Header(){
     return (
@@ -14,7 +15,14 @@ export default function Header(){
             <Link href='/events'>
                 <Button className="flex items-center gap-2"><PenBox size={20}/> Create Event</Button>
             </Link>
-            <Button variant='outline'>Login</Button>
+            <SignedIn>
+              <UserButtonMine/>
+            </SignedIn>
+            <SignedOut>
+              <SignInButton forceRedirectUrl='/dashboard'>
+                <Button variant='outline'>Login</Button>
+              </SignInButton>
+            </SignedOut>
         </div>
       </nav>
     )
