@@ -7,7 +7,7 @@ import UserButtonMine from "./UserButtonMine";
 import { checkUser } from "@/utils/checkUser";
 
 export default async function Header() {
-  await checkUser();
+  //await checkUser();
 
   return (
     <nav className="w-full p-4 flex justify-between max-w-screen-2xl mx-auto items-center border-b-2 shadow-sm">
