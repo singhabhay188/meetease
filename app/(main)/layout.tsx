@@ -51,8 +51,8 @@ const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             </ul>
           </nav>
         </aside>
-        <main className="flex-1 overflow-y-auto p-3">
-          <h2 className="text-blue-500 font-bold text-4xl mb-3 max-md:text-center">
+        <main className="flex-1 overflow-y-auto p-3 bg-blue-50">
+          <h2 className="text-blue-500 font-bold text-5xl mb-8 max-md:text-center">
             {title}
           </h2>
           {children}
