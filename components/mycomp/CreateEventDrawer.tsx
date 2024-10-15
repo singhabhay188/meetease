@@ -1,14 +1,24 @@
 "use client";
+
 import { Button } from "@/components/ui/button"
 import { Drawer, DrawerClose, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 import CreateEventForm from "./CreateEventForm";
+import { useState } from "react";
 
 export default function DrawerDemo() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    function handleClose() {
+        setIsOpen(false);
+    }
+    function handleOpen() {
+        setIsOpen(true);
+    }
 
     return (
-        <Drawer>
+        <Drawer open={isOpen} onClose={handleClose}>
             <DrawerTrigger asChild>
-                <Button variant="outline">Create Event</Button>
+                <Button variant="outline" onClick={handleOpen}>Create Event</Button>
             </DrawerTrigger>
             <DrawerContent>
                 <div className="mx-auto w-full max-w-lg">
@@ -16,11 +26,11 @@ export default function DrawerDemo() {
                         <DrawerTitle>Creating a New Event</DrawerTitle>
                     </DrawerHeader>
                     
-                    <CreateEventForm />
+                    <CreateEventForm closeDrawer={handleClose}/>
 
                     <DrawerFooter>
                         <DrawerClose asChild>
-                            <Button variant="outline">Cancel</Button>
+                            <Button variant="outline" onClick={handleClose}>Cancel</Button>
                         </DrawerClose>
                     </DrawerFooter>
                 </div>

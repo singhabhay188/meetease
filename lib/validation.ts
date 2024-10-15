@@ -14,5 +14,7 @@ export const eventSchema = z.object({
         .int()
         .positive()
         .max(720,"Select a duration less than 12 hours"),
-    isPrivate: z.boolean()
+    isPublic: z.boolean()
 });
+
+export type Event = z.infer<typeof eventSchema>;
