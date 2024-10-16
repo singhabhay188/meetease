@@ -1,16 +1,15 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client'
 
-declare global {
-  // This is necessary to avoid TypeScript errors when adding properties to globalThis
-  var prismaGlobal: PrismaClient | undefined;
+const prismaClientSingleton = () => {
+  return new PrismaClient()
 }
 
-const db: PrismaClient = globalThis.prismaGlobal || new PrismaClient();
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
 
-if (process.env.NODE_ENV !== "production") {
-  globalThis.prismaGlobal = db;
-}
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
 
-export default db;
+export default prisma
 
-//globalThis.prisma: This global variable ensures that the PrismaClient instance is created only once and shared across all modules that import it. This is important because creating a new PrismaClient instance for each module that imports it can lead to performance issues and memory leaks.
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

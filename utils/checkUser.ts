@@ -1,22 +1,25 @@
 import { clerkClient, currentUser } from "@clerk/nextjs/server";
-import db from "./db";
+import prisma from "./db";
 
 export async function checkUser() {
   console.log("Check User called");
   let user = await currentUser();
 
   if (!user) {
+    console.log("No user found");
     return null;
   }
 
   try {
-    const dbUser = await db.user.findUnique({
+    console.log(user.id);
+    const dbUser = await prisma.user.findUnique({
       where: {
         clerkUserId: user.id,
       },
     });
 
     if (dbUser) {
+      console.log("User found in database");
       return dbUser;
     }
 
@@ -32,7 +35,8 @@ export async function checkUser() {
     }
 
     // Create user in database
-    const ndbUser = await db.user.create({
+    console.log('creating database user');
+    const ndbUser = await prisma.user.create({
       data: {
         clerkUserId: user.id,
         email: user.emailAddresses[0].emailAddress,
