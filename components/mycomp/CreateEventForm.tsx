@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import useFetch from "@/hooks/useFetch";
 import { createEvent } from "@/actions/event";
+import { useRouter } from "next/navigation";
 
 const CreateEventForm = ({closeDrawer}:{closeDrawer:()=> void}) => {
+    const router = useRouter();
 
     const { control, register, handleSubmit, formState: { errors, isSubmitting } } = useForm({
         resolver: zodResolver(eventSchema),
@@ -24,8 +26,12 @@ const CreateEventForm = ({closeDrawer}:{closeDrawer:()=> void}) => {
     const { data, error, loading, fn:fnCreateEvent } = useFetch(createEvent);
 
     const onSubmit = async (data:Event) => {
+        console.log(
+            'submitting'
+        )
         await fnCreateEvent(data);
         closeDrawer();
+        router.refresh();
     }
 
     return (
