@@ -61,7 +61,7 @@ const CreateEventForm = ({closeDrawer}:{closeDrawer:()=> void}) => {
                         name="isPublic"
                         control={control}
                         render={({ field }) => (
-                            <Select value={field.value==true ? 'public' : 'private'} onValueChange={field.onChange}>
+                            <Select value={field.value==true ? 'public' : 'private'} onValueChange={(value) => field.onChange(value === 'public')}>
                                 <SelectTrigger className="w-full">
                                     <SelectValue />
                                 </SelectTrigger>
