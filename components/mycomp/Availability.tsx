@@ -4,6 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AvailabilityFormat } from "@/types";
+import { Button } from '../ui/button';
 
 const timeSlots = [
     "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30",
@@ -18,6 +19,8 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
     const [availability, setAvailability] = useState<AvailabilityFormat>(data);
 
     const handleDayToggle = (day: keyof AvailabilityFormat) => {
+        if (day === 'timeGap') return;
+    
         setAvailability(prev => ({
             ...prev,
             [day]: {
@@ -26,15 +29,56 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
             },
         }));
     };
+    
+    
 
     const handleTimeChange = (day: keyof AvailabilityFormat, type: 'startTime' | 'endTime', value: string) => {
+        if(day === 'timeGap') return;
+
         setAvailability(prev => ({
             ...prev,
             [day]: {
                 ...prev[day],
-                [type]: value,
-            },
+                [type]: value
+            }
         }));
+    };
+    
+    
+
+    const getAvailableEndTimes = (startTime: string) => {
+        const startIndex = timeSlots.indexOf(startTime);
+        return timeSlots.slice(startIndex + 1);
+    };
+
+    const validateAvailability = () => {
+        for (let key in availability) {
+            const data = availability[key as keyof AvailabilityFormat];
+    
+            if (typeof data === 'number') continue;
+    
+            if (data && data.isAvailable) {
+                if (!data.startTime || !data.endTime) {
+                    return false;
+                }
+                const startIndex = timeSlots.indexOf(data.startTime);
+                const endIndex = timeSlots.indexOf(data.endTime);
+                if (startIndex >= endIndex) {
+                    return false;
+                }
+            }
+        }
+        return true; // All checks passed
+    };
+    
+    const handleClick = () => {
+        if (validateAvailability()) {
+            if (confirm('Are you sure you want to update your availability?')) {
+                console.log('Availability updated:', availability);
+            }
+        } else {
+            alert('Please ensure all selected times are valid.');
+        }
     };
 
     return (
@@ -42,53 +86,61 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
             {Object.entries(availability)
                 .filter(([key]) => key !== 'timeGap')
                 .map(([day, data]) => (
-                    <div key={day} className="flex items-center space-x-4">
+                    <div key={day} className="flex space-x-4">
                         <Checkbox
                             id={day}
                             checked={data.isAvailable}
                             onCheckedChange={() => handleDayToggle(day as keyof AvailabilityFormat)}
+                            className='mt-2'
                         />
                         <div className="flex-1 space-y-2">
                             <Label htmlFor={day} className="text-base font-medium text-gray-900">
                                 {day.charAt(0) + day.slice(1).toLowerCase()} {/* Properly format day */}
                             </Label>
-                            {data.isAvailable && (
-                                <div className="flex space-x-4">
-                                    <Select
-                                        value={data.startTime}
-                                        onValueChange={(value) => handleTimeChange(day as keyof AvailabilityFormat, 'startTime', value)}
-                                    >
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="Start Time" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {timeSlots.map((time) => (
+                            <div className="flex space-x-4">
+                                <Select
+                                    value={data.startTime}
+                                    onValueChange={(value) => handleTimeChange(day as keyof AvailabilityFormat, 'startTime', value)}
+                                    disabled={!data.isAvailable}
+                                >
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="Start Time" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {timeSlots.map((time) => (
+                                            <SelectItem key={time} value={time}>
+                                                {time}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Select
+                                    value={data.endTime}
+                                    onValueChange={(value) => handleTimeChange(day as keyof AvailabilityFormat, 'endTime', value)}
+                                    disabled={!data.isAvailable}
+                                >
+                                    <SelectTrigger className="w-[180px]">
+                                        <SelectValue placeholder="End Time" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {data.startTime 
+                                            ? getAvailableEndTimes(data.startTime).map((time) => (
+                                                <SelectItem key={time} value={time}>
+                                                    {time}
+                                                </SelectItem>
+                                            ))
+                                            : timeSlots.map((time) => (
                                                 <SelectItem key={time} value={time}>
                                                     {time}
                                                 </SelectItem>
                                             ))}
-                                        </SelectContent>
-                                    </Select>
-                                    <Select
-                                        value={data.endTime}
-                                        onValueChange={(value) => handleTimeChange(day as keyof AvailabilityFormat, 'endTime', value)}
-                                    >
-                                        <SelectTrigger className="w-[180px]">
-                                            <SelectValue placeholder="End Time" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {timeSlots.map((time) => (
-                                                <SelectItem key={time} value={time}>
-                                                    {time}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            )}
+                                    </SelectContent>
+                                </Select>
+                            </div>
                         </div>
                     </div>
                 ))}
+            <Button onClick={handleClick}>Update Availability</Button>
         </div>
     );
 }

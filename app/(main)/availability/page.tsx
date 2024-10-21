@@ -35,7 +35,6 @@ const page = async () => {
   };
 
   const { userId } = auth();
-
   if(!userId) return <p>Not authenticated</p>;
 
   const cAvailability = await prisma.availability.findUnique({
