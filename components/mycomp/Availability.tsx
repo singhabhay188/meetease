@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { AvailabilityFormat } from "@/types";
+import { AvailabilityFormat, DayAvailability } from "@/types";
 import { Button } from '../ui/button';
 
 const timeSlots = [
@@ -81,12 +81,20 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
         }
     };
 
+
+    //since we are normally getting error that is why only this function is written ( can check git source control )
+    const isDayAvailability = (data: any): data is DayAvailability => {
+        return data && typeof data === 'object' && 'isAvailable' in data;
+    };
+
     return (
         <div className='space-y-4'>
-            {Object.entries(availability)
-                .filter(([key]) => key !== 'timeGap')
-                .map(([day, data]) => (
-                    <div key={day} className="flex space-x-4">
+    {Object.entries(availability)
+        .filter(([key]) => key !== 'timeGap')
+        .map(([day, data]) => (
+            <div key={day} className="flex space-x-4">
+                {isDayAvailability(data) ? (
+                    <>
                         <Checkbox
                             id={day}
                             checked={data.isAvailable}
@@ -138,9 +146,11 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
                                 </Select>
                             </div>
                         </div>
-                    </div>
-                ))}
-            <Button onClick={handleClick}>Update Availability</Button>
-        </div>
+                    </>
+                ) : null}
+            </div>
+        ))}
+    <Button onClick={handleClick}>Update Availability</Button>
+</div>
     );
 }
