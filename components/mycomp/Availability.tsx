@@ -5,6 +5,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AvailabilityFormat, DayAvailability } from "@/types";
 import { Button } from '../ui/button';
+import useFetch from '@/hooks/useFetch';
+import { updateAvailability } from '@/actions/availability';
+import { useRouter } from 'next/navigation';
 
 const timeSlots = [
     "00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30",
@@ -17,6 +20,8 @@ const timeSlots = [
 
 export default function Availability({ data }: { data: AvailabilityFormat }) {
     const [availability, setAvailability] = useState<AvailabilityFormat>(data);
+    const {loading, error, fn:fetchUpdateAvailability} = useFetch(updateAvailability);
+    const router = useRouter();
 
     const handleDayToggle = (day: keyof AvailabilityFormat) => {
         if (day === 'timeGap') return;
@@ -29,8 +34,6 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
             },
         }));
     };
-    
-    
 
     const handleTimeChange = (day: keyof AvailabilityFormat, type: 'startTime' | 'endTime', value: string) => {
         if(day === 'timeGap') return;
@@ -43,8 +46,6 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
             }
         }));
     };
-    
-    
 
     const getAvailableEndTimes = (startTime: string) => {
         const startIndex = timeSlots.indexOf(startTime);
@@ -71,10 +72,12 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
         return true; // All checks passed
     };
     
-    const handleClick = () => {
+    const handleClick = async () => {
         if (validateAvailability()) {
             if (confirm('Are you sure you want to update your availability?')) {
-                console.log('Availability updated:', availability);
+                console.log('Updating availability:', availability);
+                await fetchUpdateAvailability(availability);
+                router.refresh();
             }
         } else {
             alert('Please ensure all selected times are valid.');
@@ -150,7 +153,7 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
                 ) : null}
             </div>
         ))}
-    <Button onClick={handleClick}>Update Availability</Button>
+    <Button disabled={loading} onClick={handleClick}>Update Availability</Button>
 </div>
     );
 }
