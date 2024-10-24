@@ -29,3 +29,9 @@ export type AvailabilityFormat = {
     SUNDAY: DayAvailability;
     timeGap: number;
 };
+
+export type EvenCardProps = {
+    event: any;
+    isPrivatePage?: boolean;
+    username: string;
+}

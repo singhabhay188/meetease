@@ -51,7 +51,7 @@ export async function getEvents(){
         }
     });
 
-    return events;
+    return { events, username:cUser.username };
 }
 
 export async function deleteEvent(eventId:string){
