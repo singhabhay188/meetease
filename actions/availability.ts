@@ -3,6 +3,7 @@ import { AvailabilityDB, AvailabilityFormat } from "@/types";
 import db from "@/utils/db";
 import prisma from "@/utils/db";
 import { auth } from "@clerk/nextjs/server";
+import { DayInWeek } from "@prisma/client";
 
 export async function updateAvailability(data:AvailabilityFormat) {
   const { userId } = auth();
@@ -24,11 +25,16 @@ export async function updateAvailability(data:AvailabilityFormat) {
     ([day, { isAvailable, startTime, endTime }]) => {
       if (isAvailable) {
 
+        const cStartTime = new Date('2000-01-01');
+        cStartTime.setHours(startTime.split(':')[0], startTime.split(':')[1], 0, 0);
+        const cEndTime = new Date('2000-01-01');
+        cEndTime.setHours(endTime.split(':')[0], endTime.split(':')[1], 0, 0);
+
         return [
           {
-            day: day.toUpperCase(),
-            startTime: startTime,
-            endTime: endTime,
+            day: day.toUpperCase() as DayInWeek,
+            startTime: cStartTime.toISOString(),
+            endTime: cEndTime.toISOString(),
           },
         ];
       }
@@ -62,6 +68,14 @@ export async function updateAvailability(data:AvailabilityFormat) {
   return { success: true };
 }
 
+function convertDateToInd(date:Date){
+  let ndate = new Date(date);
+  ndate.setMinutes(ndate.getMinutes() + 30);
+  ndate.setHours(ndate.getHours() + 5);
+  
+  return ndate.toISOString().split('T')[1].substring(0,5);
+}
+
 function convertAvailabilityData(cAvailability : AvailabilityDB | null): AvailabilityFormat {
   // Default availability structure
   const availabilityFormat = {
@@ -82,8 +96,8 @@ function convertAvailabilityData(cAvailability : AvailabilityDB | null): Availab
     cAvailability.days.forEach(e => {
       if(availabilityFormat.hasOwnProperty(e.day)){
         availabilityFormat[e.day].isAvailable = true;
-        availabilityFormat[e.day].startTime = e.startTime;
-        availabilityFormat[e.day].endTime = e.endTime;
+        availabilityFormat[e.day].startTime = convertDateToInd(e.startTime);
+        availabilityFormat[e.day].endTime = convertDateToInd(e.endTime);
       }
     });
   }

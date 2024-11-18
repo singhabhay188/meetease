@@ -2,8 +2,8 @@ export type DayAvailabilityDB = {
     id: string;
     availabilityId: string;
     day: 'MONDAY' | 'TUESDAY' | 'WEDNESDAY' | 'THURSDAY' | 'FRIDAY' | 'SATURDAY' | 'SUNDAY';
-    startTime: string;
-    endTime: string;
+    startTime: Date;
+    endTime: Date;
 };
 
 export type AvailabilityDB = {
