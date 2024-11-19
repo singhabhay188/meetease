@@ -44,7 +44,7 @@ export default async function UserProfilePage({ params }: { params: { username: 
       ) : (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {user.events.map((event) => {
-            return <EventCard event={event} username={params.username}/>
+            return <EventCard key={event.id} event={event} username={params.username}/>
           })}
         </div>
       )}

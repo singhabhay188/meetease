@@ -30,7 +30,8 @@ export type AvailabilityFormat = {
     timeGap: number;
 };
 
-export type EvenCardProps = {
+export type EventCardProps = {
+    key: string;
     event: any;
     isPrivatePage?: boolean;
     username: string;
