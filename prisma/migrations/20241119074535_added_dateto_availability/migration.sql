@@ -64,8 +64,8 @@ CREATE TABLE "DayAvailability" (
     "id" TEXT NOT NULL,
     "availabilityId" TEXT NOT NULL,
     "day" "DayInWeek" NOT NULL,
-    "startTime" TEXT NOT NULL,
-    "endTime" TEXT NOT NULL,
+    "startTime" TIMESTAMP(3) NOT NULL,
+    "endTime" TIMESTAMP(3) NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 

@@ -127,10 +127,6 @@ export async function getAvailability(){
       days: true
     }
   });
-
-  console.log('fetched availability from db is: ',cAvailability);
   const formattedAvailability = convertAvailabilityData(cAvailability);
-  console.log('after formatting: ',formattedAvailability);
-
   return formattedAvailability;
 }

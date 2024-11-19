@@ -77,8 +77,8 @@ model DayAvailability {
   id             String       @id @default(cuid())
   availabilityId String
   day            DayInWeek
-  startTime      String
-  endTime        String
+  startTime      DateTime
+  endTime        DateTime
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
 
