@@ -1,8 +1,11 @@
-import { getEventAvailability } from "@/actions/event";
+import { getEventAvailability, getEventDetails } from "@/actions/event";
+import { notFound } from "next/navigation";
+import EventDetails from "./components/EventDetails";
+import BookingForm from "./components/BookingForm";
 
 export default async function EventPage({params}:{params:{eventId:string,username:string}}) {
-  //const availableDates = await getEventAvailability(params.eventId);
-  const availableDates = [
+  //const availability = await getEventAvailability(params.eventId);
+  const availability = [
     {
       "date": "2024-11-19",
       "slots": []
@@ -69,9 +72,16 @@ export default async function EventPage({params}:{params:{eventId:string,usernam
     }
   ]
 
+  const event = await getEventDetails(params.username, params.eventId);
+
+  if (!event) {
+    notFound();
+  }
+
   return (
-    <div className="min-h-screen p-4">
-      EventPage {params.eventId} {params.username}
+    <div className="flex flex-col justify-center lg:flex-row px-4 py-8 gap-6">
+      <EventDetails event={event} />
+      <BookingForm event={event} availability={availability} />
     </div>
   );
 }
