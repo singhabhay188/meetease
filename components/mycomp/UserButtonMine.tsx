@@ -1,7 +1,7 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
-import { ChartNoAxesColumn, User } from "lucide-react";
+import { ChartNoAxesColumn } from "lucide-react";
 
 const UserButtonMine = () => {
   return (

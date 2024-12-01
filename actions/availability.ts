@@ -22,13 +22,18 @@ export async function updateAvailability(data:AvailabilityFormat) {
   }
 
   const availabilityData = Object.entries(data).flatMap(
-    ([day, { isAvailable, startTime, endTime }]) => {
+    ([day, value]) => {
+
+      if(typeof value === 'number') return [];
+
+      const { isAvailable, startTime, endTime } = value;
+
       if (isAvailable) {
 
         const cStartTime = new Date('2000-01-01');
-        cStartTime.setHours(startTime.split(':')[0], startTime.split(':')[1], 0, 0);
+        cStartTime.setHours(parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]), 0, 0);
         const cEndTime = new Date('2000-01-01');
-        cEndTime.setHours(endTime.split(':')[0], endTime.split(':')[1], 0, 0);
+        cEndTime.setHours(parseInt(endTime.split(':')[0]), parseInt(endTime.split(':')[1]), 0, 0);
 
         return [
           {

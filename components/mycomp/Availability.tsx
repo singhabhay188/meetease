@@ -20,7 +20,7 @@ const timeSlots = [
 
 export default function Availability({ data }: { data: AvailabilityFormat }) {
     const [availability, setAvailability] = useState<AvailabilityFormat>(data);
-    const {loading, error, fn:fetchUpdateAvailability} = useFetch(updateAvailability);
+    const {loading, fn:fetchUpdateAvailability} = useFetch(updateAvailability);
     const router = useRouter();
 
     const handleDayToggle = (day: keyof AvailabilityFormat) => {
@@ -53,7 +53,7 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
     };
 
     const validateAvailability = () => {
-        for (let key in availability) {
+        for (const key in availability) {
             const data = availability[key as keyof AvailabilityFormat];
     
             if (typeof data === 'number') continue;
@@ -84,8 +84,7 @@ export default function Availability({ data }: { data: AvailabilityFormat }) {
         }
     };
 
-
-    //since we are normally getting error that is why only this function is written ( can check git source control )
+    // @ts-expect-ignore
     const isDayAvailability = (data: any): data is DayAvailability => {
         return data && typeof data === 'object' && 'isAvailable' in data;
     };

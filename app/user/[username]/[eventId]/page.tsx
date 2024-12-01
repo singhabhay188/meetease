@@ -1,4 +1,4 @@
-import { getEventAvailability, getEventDetails } from "@/actions/event";
+import { getEventDetails } from "@/actions/event";
 import { notFound } from "next/navigation";
 import EventDetails from "./components/EventDetails";
 import BookingForm from "./components/BookingForm";

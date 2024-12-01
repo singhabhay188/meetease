@@ -1,18 +1,15 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useUser } from "@clerk/nextjs";
 
-const page = () => {
-  const { isLoaded,user } = useUser();
+const Page = () => {
+  const { user } = useUser();
 
   return (
     <div className="min-h-screen space-y-8">
@@ -31,11 +28,10 @@ const page = () => {
             <p>{window?.location.origin}/user/</p>
             <Input disabled type="email" placeholder="Email" className="w-60" value={user?.username || ''}/>
           </div>
-          {/* <Button className="mt-4">Update Username</Button> */}
         </CardContent>
       </Card>
     </div>
   );
 };
 
-export default page;
+export default Page;

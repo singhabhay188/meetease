@@ -18,7 +18,7 @@ import { useState } from "react";
 export default function EventCard({ event, isPrivatePage = false, username,key }: EventCardProps) {
   const router = useRouter();
   const [isCopied, setIsCopied] = useState(false);
-  const { loading, error, fn: deleteEventFn } = useFetch(deleteEvent);
+  const { loading, fn: deleteEventFn } = useFetch(deleteEvent);
 
   async function handleDelete() {
     if (window.confirm("Are you sure you want to delete this event?")) {
@@ -41,7 +41,7 @@ export default function EventCard({ event, isPrivatePage = false, username,key }
   }
 
     function handleClick(e: React.MouseEvent) {
-      let target = e.target.tagName;
+      const target = (e.target as HTMLElement).tagName;
       if(target === "BUTTON" || target === "svg" || target === "line") return;
       
       const url = `${window.location.origin}/user/${username}/${event.id}`;

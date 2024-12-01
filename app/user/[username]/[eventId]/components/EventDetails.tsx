@@ -9,8 +9,8 @@ export default function EventDetails({ event }: { event: Event & { user: User } 
       <h1 className="text-3xl font-bold mb-4">{event.title}</h1>
       <div className="flex items-center mb-4">
         <Avatar className="w-12 h-12 mr-4">
-          <AvatarImage src={user.imageUrl} alt={user.name} />
-          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          <AvatarImage src={user.imageUrl || ''} alt={user.name || ''} />
+          <AvatarFallback>{user.name?.charAt(0)}</AvatarFallback>
         </Avatar>
         <div>
           <h2 className="text-xl font-semibold">{user.name}</h2>

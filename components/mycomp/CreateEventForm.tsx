@@ -23,7 +23,7 @@ const CreateEventForm = ({closeDrawer}:{closeDrawer:()=> void}) => {
         }
     });
 
-    const { data, error, loading, fn:fnCreateEvent } = useFetch(createEvent);
+    const { error, fn:fnCreateEvent } = useFetch(createEvent);
 
     const onSubmit = async (data:Event) => {
         console.log(

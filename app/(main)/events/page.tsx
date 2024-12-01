@@ -1,7 +1,6 @@
 import { getEvents } from "@/actions/event";
 import EventCard from "@/components/mycomp/EventCard";
 import React from "react";
-import { redirect } from 'next/navigation'
 
 const page = async () => {
   try{
@@ -18,6 +17,7 @@ const page = async () => {
     </div>;
   }
   catch(e){
+    console.log(e);
     //redirect('/sign-in');
   }
 };

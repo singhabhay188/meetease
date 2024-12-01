@@ -24,7 +24,7 @@ const AppLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
       navItems.find((item) => item.href == pathname)?.label || "Dashboard"
     );
     document.title = `MeetEase - ${title}`;
-  }, []);
+  }, [pathname, title]);
 
   return (
     <>

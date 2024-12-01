@@ -1,3 +1,5 @@
+import { Booking } from "@prisma/client";
+
 export type DayAvailabilityDB = {
     id: string;
     availabilityId: string;

@@ -10,6 +10,7 @@ import {
 import { Calendar, Clock, Video } from "lucide-react";
 import CancelMeetingButton from "./CancelMeeting";
 
+// @ts-expect-ignore
 export default function MeetingList({ meetings, type }: { meetings: any[], type: string }) {
   if (meetings.length === 0) {
     return <p>No {type} meetings found.</p>;

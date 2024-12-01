@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Availability from "@/components/mycomp/Availability";
 import { getAvailability } from "@/actions/availability";
 

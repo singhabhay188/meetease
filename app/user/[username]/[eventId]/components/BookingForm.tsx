@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
-import { addDays, format } from 'date-fns';
-import { Event, Availability, User, Booking } from '@prisma/client';
+import { format } from 'date-fns';
+import { Event, User } from '@prisma/client';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -47,7 +47,7 @@ export default function BookingForm({ event, availability }: { event: Event & { 
 
   const { loading, data, fn: fnCreateBooking } = useFetch(createBooking);
 
-  const onSubmit = async (data: Booking) => {
+  const onSubmit = async (data: any) => {
     console.log("Form submitted with data:", data);
 
     if (!selectedDate || !selectedTime) {
@@ -149,7 +149,7 @@ export default function BookingForm({ event, availability }: { event: Event & { 
           <div>
             <Input {...register("name")} placeholder="Your Name" />
             {errors.name && (
-              <p className="text-red-500 text-sm">{errors.name.message}</p>
+              <p className="text-red-500 text-sm">{String(errors.name.message)}</p>
             )}
           </div>
           <div>
@@ -159,7 +159,7 @@ export default function BookingForm({ event, availability }: { event: Event & { 
               placeholder="Your Email"
             />
             {errors.email && (
-              <p className="text-red-500 text-sm">{errors.email.message}</p>
+              <p className="text-red-500 text-sm">{String(errors.email.message)}</p>
             )}
           </div>
           <div>
