@@ -1,12 +1,40 @@
-import React from "react";
+import { Suspense } from "react";
+import { getUserMeetings } from "@/actions/meeting";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import MeetingList from "./_components/MeetingList";
 
-const page = () => {
-  return (
-    <div className="min-h-screen">
-      This is meetings page
-      <div className="h-[200vh] bg-black"></div>
-    </div>
-  );
+export const metadata = {
+  title: "Your Meetings | Schedulrr",
+  description: "View and manage your upcoming and past meetings.",
 };
 
-export default page;
+export default async function MeetingsPage() {
+  return (
+    <Tabs defaultValue="upcoming">
+      <TabsList className="mb-4">
+        <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+        <TabsTrigger value="past">Past</TabsTrigger>
+      </TabsList>
+      <TabsContent value="upcoming">
+        <Suspense fallback={<div>Loading upcoming meetings...</div>}>
+          <UpcomingMeetings />
+        </Suspense>
+      </TabsContent>
+      <TabsContent value="past">
+        <Suspense fallback={<div>Loading past meetings...</div>}>
+          <PastMeetings />
+        </Suspense>
+      </TabsContent>
+    </Tabs>
+  );
+}
+
+async function UpcomingMeetings() {
+  const meetings = await getUserMeetings("upcoming");
+  return <MeetingList meetings={meetings} type="upcoming" />;
+}
+
+async function PastMeetings() {
+  const meetings = await getUserMeetings("past");
+  return <MeetingList meetings={meetings} type="past" />;
+}

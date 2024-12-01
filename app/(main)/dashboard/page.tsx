@@ -31,7 +31,7 @@ const page = () => {
             <p>{window?.location.origin}/user/</p>
             <Input disabled type="email" placeholder="Email" className="w-60" value={user?.username || ''}/>
           </div>
-          <Button className="mt-4">Update Username</Button>
+          {/* <Button className="mt-4">Update Username</Button> */}
         </CardContent>
       </Card>
     </div>

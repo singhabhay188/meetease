@@ -29,7 +29,7 @@ export default function EventCard({ event, isPrivatePage = false, username,key }
 
   function handleCopy() {
     try {
-      navigator.clipboard.writeText(`${window.location.origin}/events/${event.id}`);
+      navigator.clipboard.writeText(`${window.location.origin}/user/${username}/${event.id}`);
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
